@@ -8,5 +8,37 @@
 
 import Foundation
 
-print("Hello, World!")
+private func printSes(with article: Article) {
+	
+	let ses = Ses(additionalS: article.title)
+	
+	for s in ses {
+		print(s)
+		Thread.sleep(forTimeInterval: 0.77)
+	}
+	
+	WikipediaArticleOpener().openArticle(id: article.id)
 
+}
+
+private func getArticleStartsWithS() {
+	
+	WikipediaRandomArticalRetriever().getArticle(first: { $0.title.hasPrefix("S") }) { (result) in
+		
+		switch result {
+		case .success(article: let article):
+			printSes(with: article)
+			exit(0)
+			
+		case .failure(error: let error):
+			print(error)
+			exit(1)
+		}
+		
+	}
+	
+}
+
+getArticleStartsWithS()
+
+dispatchMain()

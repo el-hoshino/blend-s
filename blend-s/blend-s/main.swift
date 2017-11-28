@@ -41,4 +41,4 @@ private func getArticleStartsWithS() {
 
 getArticleStartsWithS()
 
-dispatchMain()
+RunLoop.main.run()

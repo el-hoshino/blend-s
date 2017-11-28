@@ -11,9 +11,11 @@ import Foundation
 private func printSes(with article: Article) {
 	
 	let ses = Ses(additionalS: article.title)
+	let speaker = Speaker()
 	
 	for s in ses {
 		print(s)
+		speaker.say(s)
 		Thread.sleep(forTimeInterval: 0.77)
 	}
 	

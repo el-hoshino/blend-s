@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		BFC7C9CA1FCD5DA7003E7565 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC7C9C91FCD5DA7003E7565 /* main.swift */; };
 		BFC7C9D11FCD5E33003E7565 /* Ses.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC7C9D01FCD5E33003E7565 /* Ses.swift */; };
+		BFC7C9D31FCD6857003E7565 /* WikipediaArticalRetriever.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC7C9D21FCD6857003E7565 /* WikipediaArticalRetriever.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -27,6 +28,7 @@
 		BFC7C9C61FCD5DA7003E7565 /* blend-s */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "blend-s"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BFC7C9C91FCD5DA7003E7565 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		BFC7C9D01FCD5E33003E7565 /* Ses.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Ses.swift; sourceTree = "<group>"; };
+		BFC7C9D21FCD6857003E7565 /* WikipediaArticalRetriever.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WikipediaArticalRetriever.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,6 +63,7 @@
 			children = (
 				BFC7C9C91FCD5DA7003E7565 /* main.swift */,
 				BFC7C9D01FCD5E33003E7565 /* Ses.swift */,
+				BFC7C9D21FCD6857003E7565 /* WikipediaArticalRetriever.swift */,
 			);
 			path = "blend-s";
 			sourceTree = "<group>";
@@ -124,6 +127,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BFC7C9D31FCD6857003E7565 /* WikipediaArticalRetriever.swift in Sources */,
 				BFC7C9CA1FCD5DA7003E7565 /* main.swift in Sources */,
 				BFC7C9D11FCD5E33003E7565 /* Ses.swift in Sources */,
 			);

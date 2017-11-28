@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7982D1471FCDB7C200E44FBD /* Speaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7982D1461FCDB7C200E44FBD /* Speaker.swift */; };
 		7989E5AD1FCDA7B800CE92DD /* WikipediaArticleOpener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7989E5AC1FCDA7B800CE92DD /* WikipediaArticleOpener.swift */; };
 		BFC7C9CA1FCD5DA7003E7565 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC7C9C91FCD5DA7003E7565 /* main.swift */; };
 		BFC7C9D11FCD5E33003E7565 /* Ses.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC7C9D01FCD5E33003E7565 /* Ses.swift */; };
@@ -26,6 +27,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		7982D1461FCDB7C200E44FBD /* Speaker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Speaker.swift; sourceTree = "<group>"; };
 		7989E5AC1FCDA7B800CE92DD /* WikipediaArticleOpener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WikipediaArticleOpener.swift; sourceTree = "<group>"; };
 		BFC7C9C61FCD5DA7003E7565 /* blend-s */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "blend-s"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BFC7C9C91FCD5DA7003E7565 /* main.swift */ = {isa = PBXFileReference; indentWidth = 3; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
@@ -64,6 +66,7 @@
 			isa = PBXGroup;
 			children = (
 				BFC7C9C91FCD5DA7003E7565 /* main.swift */,
+				7982D1461FCDB7C200E44FBD /* Speaker.swift */,
 				BFC7C9D01FCD5E33003E7565 /* Ses.swift */,
 				BFC7C9D21FCD6857003E7565 /* WikipediaArticalRetriever.swift */,
 				7989E5AC1FCDA7B800CE92DD /* WikipediaArticleOpener.swift */,
@@ -133,6 +136,7 @@
 			files = (
 				BFC7C9D31FCD6857003E7565 /* WikipediaArticalRetriever.swift in Sources */,
 				BFC7C9CA1FCD5DA7003E7565 /* main.swift in Sources */,
+				7982D1471FCDB7C200E44FBD /* Speaker.swift in Sources */,
 				BFC7C9D11FCD5E33003E7565 /* Ses.swift in Sources */,
 				7989E5AD1FCDA7B800CE92DD /* WikipediaArticleOpener.swift in Sources */,
 			);

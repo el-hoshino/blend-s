@@ -8,6 +8,27 @@
 
 import Foundation
 
+enum Result {
+	case success(Article)
+	case failure(Error)
+}
+
+private func getArticleStartsWithS(completion: ((_ result: Result) -> Void)? = nil) {
+	
+	WikipediaRandomArticalRetriever().getArticle(first: { $0.title.hasPrefix("S") }) { (result) in
+		
+		switch result {
+		case .success(article: let article):
+			completion?(.success(article))
+			
+		case .failure(error: let error):
+			completion?(.failure(error))
+		}
+		
+	}
+	
+}
+
 private func printSes(with article: Article) {
 	
 	let ses = Ses(additionalS: article.title)
@@ -21,24 +42,16 @@ private func printSes(with article: Article) {
 
 }
 
-private func getArticleStartsWithS() {
-	
-	WikipediaRandomArticalRetriever().getArticle(first: { $0.title.hasPrefix("S") }) { (result) in
+getArticleStartsWithS { result in
+	switch result {
+	case .success(let article):
+		printSes(with: article)
+		exit(0)
 		
-		switch result {
-		case .success(article: let article):
-			printSes(with: article)
-			exit(0)
-			
-		case .failure(error: let error):
-			print(error)
-			exit(1)
-		}
-		
+	case .failure(let error):
+		print(error)
+		exit(1)
 	}
-	
 }
-
-getArticleStartsWithS()
 
 dispatchMain()

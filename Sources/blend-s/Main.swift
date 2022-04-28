@@ -32,6 +32,7 @@ struct Main {
             }
         }
         
+        // Delay the finish of printSes so users may have enough time to check the last word before trasiting to browser
         group.enter()
         DispatchQueue.global().asyncAfter(deadline: now + deadline(of: ses.endIndex)) {
             group.leave()

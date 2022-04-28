@@ -16,11 +16,6 @@ class WikipediaRandomArticalRetriever {
 	
 	private let retrievingURL: URL
 	
-	enum DownloadResult {
-		case success(article: Article)
-		case failure(error: Swift.Error)
-	}
-	
 	init() {
 		
 		guard let url = URL(string: retrievingURLString) else {
@@ -35,55 +30,27 @@ class WikipediaRandomArticalRetriever {
 
 extension WikipediaRandomArticalRetriever {
 	
-	func getArticle(first predicate: @escaping (Article) throws -> Bool, completion: @escaping (DownloadResult) -> Void) {
+	func getArticle(first predicate: @escaping (Article) throws -> Bool) async throws -> Article {
 		
-		self.downloader.downloadData(from: self.retrievingURL) { (result) in
-			
-			switch result {
-			case .success(data: let data, response: _):
-				self.getArticle(first: predicate, from: data, completion: completion)
-				
-			case .failure(error: let error):
-				completion(.failure(error: error))
-			}
-			
-		}
+        let data = try await downloader.downloadData(from: retrievingURL).data
+        let article = try getArticle(first: predicate, from: data)
+        return article
 		
 	}
 	
-	private func getArticle(first predicate: @escaping (Article) throws -> Bool, from data: Data, completion: @escaping (DownloadResult) -> Void) {
+	private func getArticle(first predicate: @escaping (Article) throws -> Bool, from data: Data) throws -> Article {
 		
-		do {
-			let wikipediaData = try JSONDecoder().decode(WikipediaData.self, from: data)
-			guard let article = try wikipediaData.article(first: predicate) else {
-				self.getArticle(first: predicate, completion: completion)
-				return
-			}
-			
-			completion(.success(article: article))
-			
-		} catch let error {
-			completion(.failure(error: error))
-		}
-		
+        let wikipediaData = try JSONDecoder().decode(WikipediaData.self, from: data)
+        guard let article = try wikipediaData.article(first: predicate) else {
+            return try self.getArticle(first: predicate, from: data)
+        }
+        return article
+        
 	}
     
 }
 
 private class Downloader {
-    
-    public enum Result {
-        
-        public enum Error: Swift.Error {
-            case taskError(Swift.Error)
-            case contentError(Swift.Error)
-            case invalidURL(url: URL)
-        }
-        
-        case success(data: Data, response: URLResponse)
-        case failure(error: Error)
-        
-    }
     
     private init() {
         
@@ -91,32 +58,29 @@ private class Downloader {
     
     public static let shared = Downloader()
     
-    open func downloadData(from url: URL, completionHandler: @escaping (_ result: Result) -> Void) {
+    func downloadData(from url: URL) async throws -> (data: Data, response: URLResponse) {
         
         let session = URLSession.shared
-        let task = session.downloadTask(with: url, completionHandler: { (localURL, response, error) in
-            
-            guard let localURL = localURL, let response = response else {
-                if let error = error {
-                    completionHandler(.failure(error: .taskError(error)))
-                } else {
-                    completionHandler(.failure(error: .invalidURL(url: url)))
-                }
-                return
-            }
-            
-            do {
-                let data = try Data(contentsOf: localURL)
-                completionHandler(.success(data: data, response: response))
-                
-            } catch let error {
-                completionHandler(.failure(error: .contentError(error)))
-                
-            }
-            
-        })
         
-        task.resume()
+        return try await withCheckedThrowingContinuation { continuation in
+            let task = session.dataTask(with: url) { data, response, error in
+                
+                switch (data, response, error) {
+                case (.some(let data), .some(let response), _):
+                    continuation.resume(returning: (data, response))
+                    
+                case (_, _, .some(let error)):
+                    continuation.resume(throwing: error)
+                    
+                case _:
+                    continuation.resume(throwing: NSError(domain: "Unknown", code: 0))
+                }
+                
+            }
+            
+            task.resume()
+            
+        }
         
     }
     

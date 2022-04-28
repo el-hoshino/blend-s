@@ -8,50 +8,71 @@
 
 import Foundation
 
-enum Result {
-	case success(Article)
-	case failure(Error)
+@main
+struct Main {
+    
+    private static var gap: TimeInterval {
+        0.77
+    }
+    
+    private static func deadline(of index: Int) -> TimeInterval {
+        Double(index) * gap
+    }
+    
+    private static func printSes(_ ses: Ses, under semaphore: DispatchSemaphore) {
+        
+        let group = DispatchGroup()
+        lazy var now = DispatchTime.now()
+                
+        for (index, s) in zip(ses.indices, ses) {
+            group.enter()
+            DispatchQueue.global().asyncAfter(deadline: now + deadline(of: index)) {
+                print(s)
+                group.leave()
+            }
+        }
+        
+        group.enter()
+        DispatchQueue.global().asyncAfter(deadline: now + deadline(of: ses.endIndex)) {
+            group.leave()
+        }
+        
+        group.wait()
+        
+        semaphore.signal()
+        
+    }
+    
+    private static func printSes(with article: Article) async {
+        
+        return await withCheckedContinuation { continuation in
+            
+            let semaphore = DispatchSemaphore(value: 0)
+            let ses = Ses(additionalS: article.title)
+            
+            DispatchQueue.global().async {
+                printSes(ses, under: semaphore)
+            }
+            
+            semaphore.wait()
+            continuation.resume()
+            
+        }
+        
+    }
+    
+    private static func openArticle(id: Int) {
+        
+        WikipediaArticleOpener().openArticle(id: id)
+        
+    }
+    
+    static func main() async throws {
+        
+        let article = try await WikipediaRandomArticalRetriever().getArticle(first: { $0.title.hasPrefix("S") })
+        await printSes(with: article)
+        openArticle(id: article.id)
+        
+    }
+    
 }
-
-private func getArticleStartsWithS(completion: ((_ result: Result) -> Void)? = nil) {
-	
-	WikipediaRandomArticalRetriever().getArticle(first: { $0.title.hasPrefix("S") }) { (result) in
-		
-		switch result {
-		case .success(article: let article):
-			completion?(.success(article))
-			
-		case .failure(error: let error):
-			completion?(.failure(error))
-		}
-		
-	}
-	
-}
-
-private func printSes(with article: Article) {
-	
-	let ses = Ses(additionalS: article.title)
-	
-	for s in ses {
-		print(s)
-		Thread.sleep(forTimeInterval: 0.77)
-	}
-	
-	WikipediaArticleOpener().openArticle(id: article.id)
-
-}
-
-getArticleStartsWithS { result in
-	switch result {
-	case .success(let article):
-		printSes(with: article)
-		exit(0)
-		
-	case .failure(let error):
-		print(error)
-		exit(1)
-	}
-}
-
-dispatchMain()

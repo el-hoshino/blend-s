@@ -39,3 +39,27 @@ extension Ses: Sequence {
     }
     
 }
+
+extension Ses: Collection {
+    
+    var startIndex: Int {
+        ses.startIndex
+    }
+    
+    var endIndex: Int {
+        ses.endIndex
+    }
+    
+    subscript(position: Int) -> String {
+        ses[position]
+    }
+    
+    subscript(bounds: Range<Int>) -> ArraySlice<String> {
+        ses[bounds]
+    }
+    
+    func index(after i: Int) -> Int {
+        ses.index(after: i)
+    }
+    
+}

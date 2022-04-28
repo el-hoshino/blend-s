@@ -19,7 +19,7 @@ struct Main {
         Double(index) * gap
     }
     
-    private static func printSes(_ ses: Ses, under semaphore: DispatchSemaphore) {
+    private static func printSes(_ ses: Ses) {
         
         let group = DispatchGroup()
         lazy var now = DispatchTime.now()
@@ -39,23 +39,17 @@ struct Main {
         
         group.wait()
         
-        semaphore.signal()
-        
     }
     
     private static func printSes(with article: Article) async {
         
         return await withCheckedContinuation { continuation in
             
-            let semaphore = DispatchSemaphore(value: 0)
             let ses = Ses(additionalS: article.title)
-            
             DispatchQueue.global().async {
-                printSes(ses, under: semaphore)
+                printSes(ses)
+                continuation.resume()
             }
-            
-            semaphore.wait()
-            continuation.resume()
             
         }
         
